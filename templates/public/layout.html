@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Moni Linux</title>
+    <link rel="stylesheet" href="/static/vendor/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="/static/vendor/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap-table/bootstrap-table.min.css">
+    <style>
+        .blank {
+            height: 10px;
+        }
+
+        .img {
+            height: 20px;
+            width: 20px;
+        }
+
+        .blankspan {
+            width: 10px;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .hidepage {
+            position: absolute;
+            background-color: #8a8a8a;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cardRedis {
+            width: 30%;
+        }
+
+        .PageActive {
+            color: blue;
+        }
+
+        .step-links {
+            vertical-align: middle;
+            text-align: center;
+
+        }
+
+        {% block MyCss %}<!--这里用来设置子页面自己的css-- >
+        {% endblock %}
+    </style>
+
+</head>
+<body>
+<div class="sidebar-fixed header-fixed">
+
+    <div class="page-wrapper">
+        <div class="main-container">
+            <div style="margin-top: 0px" class="sidebar">
+                <nav class="sidebar-nav">
+                    <ul class="nav">
+                        <li class="nav-title">Menu</li>
+
+                        <li class="nav-item nav-dropdown open " id="envMenu">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
+                                <i class="icon icon-target"></i> Linux信息监控 <i class="fa fa-caret-left"></i>
+                            </a>
+
+                            <ul class="nav-dropdown-items">
+                                <li class="nav-item">
+                                    <a href="/linuxInfo/" class="nav-link active" id="linuxInfo">
+                                        <i class="icon icopenon-target"></i> Linux主机配置
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="/linuxMon/" class="nav-link" id="linuxMon">
+                                        <i class="icon icopenon-target"></i> Linux主机监控
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div style="margin-top: 0px" class="content">
+                {% block content %}<!--这里用来设置子页面自己的js-->
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/popper.js/popper.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/vendor/chart.js/chart.min.js"></script>
+{#<script src="/static/vendor/chart.js/chartNew.js"></script>#}
+<script src="/static/js/carbon.js"></script>
+<script src="/static/js/demo.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="/static/vendor/bootstrap-table/bootstrap-table.min.js"></script>
+<!-- Latest compiled and minified Locales -->
+<script src="/static/vendor/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/static/vendor/jquery/jquery.cookie.js"></script>
+<script src="/static/vendor/bootstrap3-editable/css/bootstrap-editable.css"></script>
+<script src="/static/vendor/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+{% block js %}<!--这里用来设置子页面自己的js-->
+{% endblock %}
+</body>
+</html>

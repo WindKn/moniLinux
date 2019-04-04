@@ -1,0 +1,127 @@
+{% extends "public/layout.html" %}
+{% block content %}
+    <div>
+        <select id="linuxID" class="form-control form-control-sm" style="width: 120px;display:inline ;">
+            {% for serverList in serverList %}
+                <option value={{ serverList.id }}>{{ serverList.serverName }}</option>
+                {{% endfor %}
+        </select>
+        <button onclick="viewLinuxInfo()" type="button" class="btn btn-secondary btn-sm">查看结果</button>
+        <button onclick="runTrace()" type="button" class="btn btn-secondary btn-sm">开始跟踪</button>
+        <button onclick="stopTrace()" type="button" class="btn btn-secondary btn-sm">停止跟踪</button>
+        <button onclick="startTraceAll()" type="button" class="btn btn-secondary btn-sm">开始所有</button>
+        <button onclick="stopAllTrace()" type="button" class="btn btn-secondary btn-sm">停止所有</button>
+        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#saveLinuxInfo">保存跟踪结果</button>
+
+
+    </div>
+    <div>
+        <span>选择主机：</span>
+        <select id="traceLinuxID" class="form-control form-control-sm" style="width: 120px;display:inline ;" onchange="selectTrcedLinux()">
+            {% for serverList in serverList %}
+                <option value={{ serverList.id }}>{{ serverList.serverName }}</option>
+                {{% endfor %}
+        </select>
+        <span>选择记录：</span>
+        <select id="traceList" class="form-control form-control-sm" style="width: 120px;display:inline ;">
+            {% for recordList in recordList %}
+                <option value={{ recordList.id }}>{{ recordList.trace_name }}</option>
+                {{% endfor %}
+        </select>
+
+        <button onclick="showHis()" type="button" class="btn btn-secondary btn-sm">查看保存结果</button>
+        <button onclick="delHis()" type="button" class="btn btn-secondary btn-sm">删除</button>
+        <span style="padding-left:10px;" class="">
+            <a>开始时间<input type="text"  id="stime" value="00:00:00" style="width: 90px"></a>
+            <a>结束时间<input type="text"  id="etime" value="00:00:00" style="width: 90px"></a>
+            <button onclick="filterShow()" type="button" class="btn btn-secondary btn-sm">过滤展示</button>
+            <button onclick="timeInterval()" type="button" class="btn btn-secondary btn-sm">时间差(秒)</button>
+            <a><input type="text" style="width: 50px;" disabled="disabled" id="dtime"></a>
+        </span>
+    </div>
+    <div class="card-body bg-light " id="traceInfo">
+        <li>跟踪主机列表：</li>
+        <li id="recordList">
+            {% for tracedServer in tracedServer %}
+                {{ tracedServer.serverName }},
+            {% endfor %}
+        </li>
+    </div>
+
+    <div class="modal fade" id="saveLinuxInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">跟踪结果命名</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="text" class="form-control form-control-sm" placeholder="请输入保存的名称" id="saveName">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveLinuxTraceInfo()" id="saveLinuxInfo">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hide" id="detailInfo">
+        <div class="card">
+            <div class="card-header bg-light">
+                CPU信息：红色-total 蓝色-usr 绿色-sys
+            </div>
+            <div class="card-body" id="cpuInfoP">
+                <canvas id="cpuInfo" width="591" height="295" class="chartjs-render-monitor"
+                        style="display: block; width: 591px; height: 295px;"></canvas>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header bg-light">
+                内存信息：红色-free 蓝色-used 黑色-cached
+            </div>
+            <div class="card-body" id="memInfoP">
+                <canvas id="memInfo" width="591" height="295" class="chartjs-render-monitor"
+                        style="display: block; width: 591px; height: 295px;"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-light">
+                网络信息：红色-total_used 蓝色-received 黑色-sended
+            </div>
+            <div class="card-body" id="netInfoP">
+                <canvas id="netInfo" width="591" height="295" class="chartjs-render-monitor"
+                        style="display: block; width: 591px; height: 295px;"></canvas>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+
+        $(function () {
+            //初始化菜单
+            var menuInit = new initialMenu();
+            menuInit.menuInit();
+        })
+        var initialMenu = function () {
+            var oInit = new Object();
+            oInit.menuInit = function () {
+                $('.nav-link').removeClass('active');
+                $('#linuxMon').addClass('active');
+            };
+            return oInit;
+        }
+
+    </script>
+    <script src="/static/MyJs/moniLinux.js"></script>
+
+
+{% endblock %}

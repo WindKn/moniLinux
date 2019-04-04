@@ -1,0 +1,176 @@
+{% extends "public/layout.html" %}
+{% block content %}
+    <div class="alert alert-danger hide" id="errMsg"></div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>主机名称</th>
+                    <th>IP</th>
+                    <th>端口</th>
+                    <th>用户名</th>
+                    <th>密码</th>
+                    <th>路径</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for serverList in serverList %}
+                    <tr>
+                        <td name="serverName">{{ serverList.serverName }}</td>
+                        <td name="ip">{{ serverList.ip }}</td>
+                        <td name="port">{{ serverList.port }}</td>
+                        <td name="uname">{{ serverList.uname }}</td>
+                        <td name="pwd">{{ serverList.pwd }}</td>
+                        <td name="Path">{{ serverList.resultPath }}</td>
+                        <td style="display: none" name="serverID">{{ serverList.id }}</td>
+                        <td><a style="color:blue;cursor:pointer" onclick="editLinuxInfo(this)">编辑</a>|<a
+                                style="color: blue;cursor:pointer" onclick="deleteLinuxInfo(this)">删除</a></td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {#  pagination  #}
+    {#    <div class="">#}
+    {#        <nav>#}
+    {#               #}
+    {#            <ul class="pagination">#}
+    {#                       {% if serverList.has_previous %}#}
+    {#                       #}
+    {#                <li class="">#}
+    {#                           <a href="?page={{ serverList.previous_page_number }}" aria-label="Previous">#}
+    {#                           <span aria_hidden="true">&laquo;</span>#}
+    {#                </a>#}
+    {#                           #}
+    {#                </li>#}
+    {#                       {% endif %}#}
+    {#                       #}
+    {#                       {% for page_num in serverList.paginator.page_range %}#}
+    {#                           {% if page_num == serverList.number %}#}
+    {#                           #}
+    {#                    <li class="active"><a href="?page={{ page_num }}" style="color:mediumblue;">{{ page_num }}</a></li>#}
+    {#                               {% else %}#}
+    {#                           #}
+    {#                    <li class=""><a href="?page={{ page_num }}">{{ page_num }}</a></li>#}
+    {#                               {% endif %}#}
+    {#                       {% endfor %}#}
+    {#                       #}
+    {#                       {% if serverList.has_next %}#}
+    {#                       #}
+    {#                <li class="">#}
+    {#                                 <a href="?page={{ serverList.next_page_number }}" aria-label="Next">#}
+    {#                                     <span aria_hidden="true">&raquo;</span>#}
+    {#                </a>#}
+    {#                           #}
+    {#                </li>#}
+    {#                     {% endif %}#}
+    {#                   #}
+    {#            </ul>#}
+    {#        </nav>#}
+    {##}
+    {#    </div>#}
+
+    <div class="pagination">
+           <span class="step-links">
+        {% if serverList.has_previous %}
+                   <a href="?page=1">&laquo; First</a>
+                   <a href="?page={{ serverList.previous_page_number }}">Previous</a>
+               {% endif %}
+
+               <span class="current">
+            Page {{ serverList.number }} of {{ serverList.paginator.num_pages }}
+        </span>
+
+        {% if serverList.has_next %}
+                   <a href="?page={{ serverList.next_page_number }}">Next</a>
+                   <a href="?page={{ serverList.paginator.num_pages }}">Last &raquo;</a>
+               {% endif %}
+           </span>
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" onclick="addNewServer()">新增主机</button>
+    </div>
+    <div class="card hide" style="margin-top: 10px" id="editLinuxInfo">
+        <div class="card-header bg-light">Linux信息</div>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <label class="require">主机名称</label>
+                <input id="serverName" class="form-control" value="">
+            </div>
+            <div class="col-md-4">
+                <label class="require">IP</label>
+                <input id="ip" class="form-control" value="">
+            </div>
+            <div class="col-md-4">
+                <label class="require">端口</label>
+                <input id="port" class="form-control" value="">
+            </div>
+            <div class="col-md-4">
+                <label class="require">用户名</label>
+                <input id="uname" class="form-control" value="">
+            </div>
+            <div class="col-md-4">
+                <label class="require">密码</label>
+                <input id="pwd" class="form-control" value="">
+            </div>
+            <div class="col-md-4">
+                <label class="require">主机路径</label>
+                <input id="Path" class="form-control" value="">
+            </div>
+            <div id="serverID" style="display: none;" class="form-control" value=""></div>
+        </div>
+        <div class="blank"></div>
+        <div class="mb-4">
+            <button type="button" class="btn btn-outline-primary" style="float: right;margin-left: 15px"
+                    onclick="cancelEdit()">取消
+            </button>
+            <button type="button" class="btn btn-primary" style="float: right" onclick="editSubmit()">提交</button>
+        </div>
+    </div>
+
+    <div class="card hide" style="margin-top: 10px" id="addNewServer">
+        <div class="card-header bg-light">新增Server</div>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <label class="require">主机名称</label>
+                <input id="serverNameAdd" class="form-control" value="">
+            </div>
+            <div class="col-md-4">
+                <label class="require">IP</label>
+                <input id="ipAdd" class="form-control" value="">
+            </div>
+            <div class="col-md-4">
+                <label class="require">端口</label>
+                <input id="portAdd" class="form-control" value="">
+            </div>
+            <div class="col-md-4">
+                <label class="require">用户名</label>
+                <input id="unameAdd" class="form-control" value="">
+            </div>
+            <div class="col-md-4">
+                <label class="require">密码</label>
+                <input id="pwdAdd" class="form-control" value="">
+            </div>
+            <div class="col-md-4">
+                <label class="require">主机路径</label>
+                <input id="PathAdd" class="form-control" value="">
+            </div>
+        </div>
+        <div class="blank"></div>
+        <div class="mb-4">
+            <button type="button" class="btn btn-outline-primary" style="float: right;margin-left: 15px"
+                    onclick="cancelAdd()">取消
+            </button>
+            <button type="button" class="btn btn-primary" style="float: right" onclick="addSubmit()">提交</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="/static/MyJs/linuxInfo.js"></script>
+{% endblock %}
+
