@@ -1,4 +1,4 @@
-基于python+django+dstat+linux shell的加单监控Linux主机信息
+基于python+django+chart.js+dstat+linux shell的简单监控Linux主机信息，如CPU、内存、网卡使用情况，支持报错跟踪结果
 
 服务主机需要安装：paramiko  
 pip instatll paramiko
